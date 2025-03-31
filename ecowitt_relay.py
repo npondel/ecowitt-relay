@@ -1,0 +1,55 @@
+import os
+from flask import Flask, request
+import requests
+
+# Default in local HA params
+HA_HOST = os.getenv("HOME_ASSISTANT_URL", "http://homeassistant")
+HA_PORT = os.getenv("HA_PORT", "4199")
+HA_PATH = os.getenv("HA_PATH", "/data/report/")
+
+PWS_ID = os.getenv("PWSWEATHER_STATION_ID")
+PWS_KEY = os.getenv("PWSWEATHER_API_KEY")
+PORT = int(os.getenv("RELAY_PORT", 5000))
+
+app = Flask(__name__)
+
+@app.route('/weather', methods=['POST'])
+def receive_data():
+    data = request.form.to_dict()
+    print("Received data:", data)
+
+    # Forward to Home Assistant
+    try:
+        ha_full_url = f"{HA_HOST}:{HA_PORT}{HA_PATH}"
+        response = requests.post(ha_full_url, data=data)
+        print(f"Forwarded to Home Assistant: {response.status_code}")
+    except Exception as e:
+        print("HA Forward Error:", e)
+
+    # Forward to PWSweather
+    try:
+        if PWS_ID and PWS_KEY:
+            pws_payload = {
+                'ID': PWS_ID,
+                'PASSWORD': PWS_KEY,
+                'dateutc': 'now',
+                'winddir': data.get('winddir'),
+                'windspeedmph': data.get('windspeedmph'),
+                'humidity': data.get('humidity'),
+                'tempf': data.get('tempf'),
+                'baromin': data.get('baromin'),
+                'rainin': data.get('rainin'),
+                'dailyrainin': data.get('dailyrainin'),
+                'action': 'updateraw',
+            }
+            requests.get('https://pwsupdate.pwsweather.com/api/v1/submitwx', params=pws_payload)
+            print("Forwarded to PWSweather.")
+        else:
+            print("PWS credentials not set — skipping.")
+    except Exception as e:
+        print("PWS Forward Error:", e)
+
+    return 'OK', 200
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=PORT)

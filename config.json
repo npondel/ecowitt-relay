@@ -1,0 +1,22 @@
+{
+  "name": "Ecowitt Relay",
+  "version": "1.0.0",
+  "slug": "ecowitt_relay",
+  "description": "Relay Ecowitt data to Home Assistant and PWSweather, as Ecowitt only supports one custom endpoint.",
+  "startup": "application",
+  "boot": "auto",
+  "arch": [ "aarch64", "amd64", "armv7", "i386" ],
+  "options": {
+    "pws_id": "",
+    "pws_key": "",
+    "relay_port": "5000"
+  },
+  "schema": {
+    "pws_id": "str?",
+    "pws_key": "str?",
+    "relay_port": "str"
+  },
+  "ports": {
+    "5000/tcp": 5000
+  }
+}
