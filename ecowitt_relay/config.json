@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "slug": "ecowitt_relay",
   "description": "Relay Ecowitt data to Home Assistant and PWSweather, as Ecowitt only supports one custom endpoint.",
+  "documentation": "https://github.com/npondel/ecowitt-relay",
   "startup": "application",
   "boot": "auto",
   "arch": [ "aarch64", "amd64", "armv7", "i386" ],
