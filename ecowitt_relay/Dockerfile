@@ -10,4 +10,6 @@ RUN apt-get update && apt-get install -y jq && \
     pip install flask requests && \
     chmod +x /run.sh
 
+ENV PYTHONUNBUFFERED=1
+
 CMD [ "/run.sh" ]
