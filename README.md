@@ -12,5 +12,5 @@ Ecowitt only supports a single custom endpoint to send data to.  This add-on all
 ## Usage
 
 1. Add this repository to Home Assistant.  (Add-on Store > three-dot menu > Repositories)
-2. Install the "Ecowitt Relay" add-on.
-3. Set your Ecowitt console to upload to `http://<HA_IP>:5000/weather`.
+2. Install the "Ecowitt Relay" add-on.  Don't forget to configure in the "configuration" tab.
+3. Set your Ecowitt console to upload to `http://<HA_IP>:5000/weather`.  Change port if needed.
