@@ -9,7 +9,7 @@ HA_WEBHOOK_PORT = os.getenv("HA_WEBHOOK_PORT", "8123")
 
 PWS_ID = os.getenv("PWSWEATHER_STATION_ID")
 PWS_KEY = os.getenv("PWSWEATHER_API_KEY")
-PORT = int(os.getenv("RELAY_PORT", 5000))
+PORT = int(os.getenv("RELAY_PORT") or 5000)
 
 app = Flask(__name__)
 
