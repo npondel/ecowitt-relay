@@ -1,9 +1,5 @@
 # Ecowitt Relay Home Assistant Add-on
-
-This add-on receives  data from the Ecowitt weather station and forwards it to:
-
-- Home Assistant (via the Ecowitt integration)
-- PWSweather
+Ecowitt only supports a single custom endpoint to send data to.  This add-on allows sending to HA and PWSweather at the same time, via a simple Flask relay server.
 
 ## Configuration
 
