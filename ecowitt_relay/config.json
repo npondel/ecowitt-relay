@@ -1,8 +1,8 @@
 {
   "name": "Ecowitt Relay",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "slug": "ecowitt_relay",
-  "description": "Relay Ecowitt data to Home Assistant and PWSweather, as Ecowitt only supports one custom endpoint.",
+  "description": "Relay Ecowitt data to Home Assistant via Webhook and to PWSweather",
   "documentation": "https://github.com/npondel/ecowitt-relay",
   "startup": "application",
   "boot": "auto",
@@ -10,12 +10,18 @@
   "options": {
     "pws_id": "",
     "pws_key": "",
-    "relay_port": "5000"
+    "relay_port": "5000",
+    "ha_webhook_path": "/api/webhook/your_webhook_id",
+    "ha_webhook_host": "homeassistant",
+    "ha_webhook_port": "8123"
   },
   "schema": {
     "pws_id": "str?",
     "pws_key": "str?",
-    "relay_port": "str"
+    "relay_port": "str",
+    "ha_webhook_path": "str",
+    "ha_webhook_host": "str",
+    "ha_webhook_port": "str"
   },
   "ports": {
     "5000/tcp": 5000

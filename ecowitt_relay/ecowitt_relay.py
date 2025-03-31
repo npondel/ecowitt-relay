@@ -2,10 +2,10 @@ import os
 from flask import Flask, request
 import requests
 
-# Default in local HA params
-HA_HOST = os.getenv("HOME_ASSISTANT_URL", "http://homeassistant")
-HA_PORT = os.getenv("HA_PORT", "4199")
-HA_PATH = os.getenv("HA_PATH", "/data/report/")
+# Load env variables
+HA_WEBHOOK_PATH = os.getenv("HA_WEBHOOK_PATH")
+HA_WEBHOOK_HOST = os.getenv("HA_WEBHOOK_HOST", "homeassistant")
+HA_WEBHOOK_PORT = os.getenv("HA_WEBHOOK_PORT", "8123")
 
 PWS_ID = os.getenv("PWSWEATHER_STATION_ID")
 PWS_KEY = os.getenv("PWSWEATHER_API_KEY")
@@ -18,15 +18,18 @@ def receive_data():
     data = request.form.to_dict()
     print("Received data:", data)
 
-    # Forward to Home Assistant
+    # === Forward to Home Assistant Webhook ===
     try:
-        ha_full_url = f"{HA_HOST}:{HA_PORT}{HA_PATH}"
-        response = requests.post(ha_full_url, data=data)
-        print(f"Forwarded to Home Assistant: {response.status_code}")
+        if HA_WEBHOOK_PATH:
+            ha_url = f"http://{HA_WEBHOOK_HOST}:{HA_WEBHOOK_PORT}{HA_WEBHOOK_PATH}"
+            response = requests.post(ha_url, data=data)
+            print(f"Forwarded to Home Assistant Webhook: {response.status_code}")
+        else:
+            print("HA Webhook path not set — skipping HA forward.")
     except Exception as e:
         print("HA Forward Error:", e)
 
-    # Forward to PWSweather
+    # === Forward to PWSweather ===
     try:
         if PWS_ID and PWS_KEY:
             pws_payload = {
