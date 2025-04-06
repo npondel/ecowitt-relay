@@ -43,9 +43,9 @@ def receive_data():
                 'action': 'updateraw'
             })
             # Log the final URL with all parameters:
-            final_url = requests.Request('GET', 'https://pwsupdate.pwsweather.com/api/v1/submitwx', params=pws_payload).prepare().url
+            final_url = requests.Request('GET', 'http://pwsweather.com/pwsupdate/pwsupdate.php', params=pws_payload).prepare().url
             print("Final PWS URL:", final_url)
-            response = requests.get('https://pwsupdate.pwsweather.com/api/v1/submitwx', params=pws_payload)
+            response = requests.get('http://pwsweather.com/pwsupdate/pwsupdate.php', params=pws_payload)
             print("Forwarded to PWSweather. Response:", response.text)
         else:
             print("PWS credentials not set — skipping.")
