@@ -11,6 +11,8 @@ PWS_ID = os.getenv("PWSWEATHER_STATION_ID")
 PWS_KEY = os.getenv("PWSWEATHER_API_KEY")
 PORT = int(os.getenv("RELAY_PORT") or 5000)
 
+print("App update: 4-5-25")
+
 app = Flask(__name__)
 
 @app.route('/weather', methods=['POST'])
@@ -38,11 +40,16 @@ def receive_data():
                 'dateutc': 'now',
                 'winddir': data.get('winddir'),
                 'windspeedmph': data.get('windspeedmph'),
+                'windgustmph': data.get('windgustmph'),
                 'humidity': data.get('humidity'),
                 'tempf': data.get('tempf'),
-                'baromin': data.get('baromin'),
+                'baromrelin': data.get('baromrelin'),
+                'baromabsin': data.get('baromabsin'),
                 'rainin': data.get('rainin'),
                 'dailyrainin': data.get('dailyrainin'),
+                'maxdailygust': data.get('maxdailygust'),
+                'solarradiation': data.get('solarradiation'),
+                'uv': data.get('uv'),
                 'action': 'updateraw',
             }
             requests.get('https://pwsupdate.pwsweather.com/api/v1/submitwx', params=pws_payload)
