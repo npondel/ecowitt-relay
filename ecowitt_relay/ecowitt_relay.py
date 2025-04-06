@@ -32,26 +32,21 @@ def receive_data():
     # === Forward to PWSweather ===
     try:
         if PWS_ID and PWS_KEY:
-            pws_payload = {
+            # Use all incoming parameters:
+            pws_payload = data.copy()
+            # Remove device-provided PASSKEY if it exists:
+            pws_payload.pop('PASSKEY', None)
+            # Override with your PWS credentials and add required action:
+            pws_payload.update({
                 'ID': PWS_ID,
                 'PASSWORD': PWS_KEY,
-                'dateutc': 'now',
-                'winddir': data.get('winddir'),
-                'windspeedmph': data.get('windspeedmph'),
-                'windgustmph': data.get('windgustmph'),
-                'humidity': data.get('humidity'),
-                'tempf': data.get('tempf'),
-                'baromrelin': data.get('baromrelin'),
-                'baromabsin': data.get('baromabsin'),
-                'rainin': data.get('rainin'),
-                'dailyrainin': data.get('dailyrainin'),
-                'maxdailygust': data.get('maxdailygust'),
-                'solarradiation': data.get('solarradiation'),
-                'uv': data.get('uv'),
-                'action': 'updateraw',
-            }
-            requests.get('https://pwsupdate.pwsweather.com/api/v1/submitwx', params=pws_payload)
-            print("Forwarded to PWSweather.")
+                'action': 'updateraw'
+            })
+            # Log the final URL with all parameters:
+            final_url = requests.Request('GET', 'https://pwsupdate.pwsweather.com/api/v1/submitwx', params=pws_payload).prepare().url
+            print("Final PWS URL:", final_url)
+            response = requests.get('https://pwsupdate.pwsweather.com/api/v1/submitwx', params=pws_payload)
+            print("Forwarded to PWSweather. Response:", response.text)
         else:
             print("PWS credentials not set — skipping.")
     except Exception as e:
