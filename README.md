@@ -21,3 +21,6 @@ Ecowitt only supports a single custom endpoint to send data to.  This add-on all
 4. Set the Ecowitt console to upload to `http://<HA_IP>:5000/weather`.  Change port if you changed it in the configuration.
 
 If all is going well, your EcoWitt should be sending data to port 5000, where this relay add-on picks up the data and relays it to HA's webhook url for EcoWitt, and the PWS weather API.
+
+## Notes
+- If debugging, note that while you can send data to PWS every 60 sec, the website buffers 5mins worth of data.
