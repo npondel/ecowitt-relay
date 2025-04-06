@@ -35,7 +35,7 @@ def receive_data():
             # Map Ecowitt parameters to Weather Underground format.
             pws_payload = {
                 'ID': PWS_ID,
-                'PASSKEY': PWS_KEY,
+                'PASSWORD': PWS_KEY,
                 'action': 'updateraw',
                 'dateutc': data.get('dateutc', 'now'),
                 'tempf': data.get('tempf'),
@@ -43,7 +43,7 @@ def receive_data():
                 'winddir': data.get('winddir'),
                 'windspeedmph': data.get('windspeedmph'),
                 'windgustmph': data.get('windgustmph'),
-                # Map pressure: use baromabsin as baromin (Weather Underground expects baromin)
+                # Map pressure using baromabsin as baromin:
                 'baromin': data.get('baromabsin'),
                 'rainin': data.get('hrain_piezo'),
                 'dailyrainin': data.get('drain_piezo'),
