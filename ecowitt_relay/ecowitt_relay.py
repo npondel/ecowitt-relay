@@ -35,7 +35,7 @@ def receive_data():
             # Map Ecowitt parameters to Weather Underground format.
             pws_payload = {
                 'ID': PWS_ID,
-                'PASSWORD': PWS_KEY,
+                'PASSKEY': PWS_KEY,
                 'action': 'updateraw',
                 'dateutc': data.get('dateutc', 'now'),
                 'tempf': data.get('tempf'),
@@ -43,8 +43,8 @@ def receive_data():
                 'winddir': data.get('winddir'),
                 'windspeedmph': data.get('windspeedmph'),
                 'windgustmph': data.get('windgustmph'),
-                'baromrelin': data.get('baromrelin'),
-                'baromabsin': data.get('baromabsin'),
+                # Map pressure: use baromabsin as baromin (Weather Underground expects baromin)
+                'baromin': data.get('baromabsin'),
                 'rainin': data.get('hrain_piezo'),
                 'dailyrainin': data.get('drain_piezo'),
                 'maxdailygust': data.get('maxdailygust'),
@@ -56,13 +56,13 @@ def receive_data():
             # Log the final URL with all parameters:
             final_url = requests.Request(
                 'GET',
-                'https://pwsweather.com/pwsupdate/pwsupdate.php',
+                'http://pwsweather.com/pwsupdate/pwsupdate.php',
                 params=pws_payload
             ).prepare().url
             print("Final PWS URL:", final_url)
             
             response = requests.get(
-                'https://pwsweather.com/pwsupdate/pwsupdate.php',
+                'http://pwsweather.com/pwsupdate/pwsupdate.php',
                 params=pws_payload
             )
             print("Forwarded to PWS API. Response:", response.text)
