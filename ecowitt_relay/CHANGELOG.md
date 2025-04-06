@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.0.12 - 2025-04-06
+- Continue to clean up logging.
+
 ## [2.0.1] - 2025-04-06
 ### Changed
 - **Cleaned up logging:** stop logging HTML

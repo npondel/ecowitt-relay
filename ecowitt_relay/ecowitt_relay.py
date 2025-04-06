@@ -60,13 +60,6 @@ def receive_data():
                 'indoortempf': data.get('tempinf'),
                 'indoorhumidity': data.get('humidityin'),
             }
-            # Log the final URL with all parameters:
-            final_url = requests.Request(
-                'GET',
-                'http://pwsweather.com/pwsupdate/pwsupdate.php',
-                params=pws_payload
-            ).prepare().url
-            print("Final PWS URL:", final_url)
 
             pws_response = requests.get('http://pwsweather.com/pwsupdate/pwsupdate.php', params=pws_payload)
             # Check if the response text contains "error" anywhere
