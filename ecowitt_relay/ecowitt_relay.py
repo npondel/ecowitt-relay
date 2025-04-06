@@ -74,7 +74,7 @@ def receive_data():
                 pws_success = False
                 print("PWS API returned error response:", pws_response.text)
             else:
-                print("Forwarded to PWS API. Response:", pws_response.text)
+                print("Forwarded to PWS API successfully.")
         else:
             print("PWS credentials not set — skipping.")
     except Exception as e:
