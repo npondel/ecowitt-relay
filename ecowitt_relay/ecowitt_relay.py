@@ -16,20 +16,27 @@ app = Flask(__name__)
 @app.route('/weather', methods=['POST'])
 def receive_data():
     data = request.form.to_dict()
-    print("Received data:", data)
+    
+    ha_success = True
+    pws_success = True
 
     # === Forward to Home Assistant Webhook ===
     try:
         if HA_WEBHOOK_PATH:
             ha_url = f"http://{HA_WEBHOOK_HOST}:{HA_WEBHOOK_PORT}{HA_WEBHOOK_PATH}"
-            response = requests.post(ha_url, data=data)
-            print(f"Forwarded to Home Assistant Webhook: {response.status_code}")
+            ha_response = requests.post(ha_url, data=data)
+            if ha_response.status_code != 200:
+                ha_success = False
+                print(f"HA Forward Error: Non-200 status code {ha_response.status_code}")
+            else:
+                print(f"Forwarded to Home Assistant Webhook: {ha_response.status_code}")
         else:
             print("HA Webhook path not set — skipping HA forward.")
     except Exception as e:
-        print("HA Forward Error:", e)
+        ha_success = False
+        print("HA Forward Exception:", e)
 
-    # === Forward to PWS API using Weather Underground Formatting ===
+    # === Forward to PWS API using Weather Underground formatting ===
     try:
         if PWS_ID and PWS_KEY:
             # Map Ecowitt parameters to Weather Underground format.
@@ -43,8 +50,8 @@ def receive_data():
                 'winddir': data.get('winddir'),
                 'windspeedmph': data.get('windspeedmph'),
                 'windgustmph': data.get('windgustmph'),
-                # Map pressure using baromabsin as baromin:
-                'baromin': data.get('baromabsin'),
+                'baromrelin': data.get('baromrelin'),
+                'baromabsin': data.get('baromabsin'),
                 'rainin': data.get('hrain_piezo'),
                 'dailyrainin': data.get('drain_piezo'),
                 'maxdailygust': data.get('maxdailygust'),
@@ -60,16 +67,23 @@ def receive_data():
                 params=pws_payload
             ).prepare().url
             print("Final PWS URL:", final_url)
-            
-            response = requests.get(
-                'http://pwsweather.com/pwsupdate/pwsupdate.php',
-                params=pws_payload
-            )
-            print("Forwarded to PWS API. Response:", response.text)
+
+            pws_response = requests.get('http://pwsweather.com/pwsupdate/pwsupdate.php', params=pws_payload)
+            # Check if the response text contains "error" anywhere
+            if "error" in pws_response.text.lower():
+                pws_success = False
+                print("PWS API returned error response:", pws_response.text)
+            else:
+                print("Forwarded to PWS API. Response:", pws_response.text)
         else:
             print("PWS credentials not set — skipping.")
     except Exception as e:
-        print("PWS API Forward Error:", e)
+        pws_success = False
+        print("PWS API Forward Exception:", e)
+
+    # Only log full received data if either forward failed
+    if not ha_success or not pws_success:
+        print("Full received data:", data)
 
     return 'OK', 200
 
