@@ -11,12 +11,11 @@ PWS_ID = os.getenv("PWSWEATHER_STATION_ID")
 PWS_KEY = os.getenv("PWSWEATHER_API_KEY")
 PORT = int(os.getenv("RELAY_PORT") or 5000)
 
-print("App update: 4-5-25")
-
 app = Flask(__name__)
 
 @app.route('/weather', methods=['POST'])
 def receive_data():
+    print("App update: 4-5-25")
     data = request.form.to_dict()
     print("Received data:", data)
 
