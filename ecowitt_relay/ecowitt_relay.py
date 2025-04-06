@@ -15,7 +15,6 @@ app = Flask(__name__)
 
 @app.route('/weather', methods=['POST'])
 def receive_data():
-    print("App update: 4-5-25")
     data = request.form.to_dict()
     print("Received data:", data)
 

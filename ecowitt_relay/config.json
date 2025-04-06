@@ -1,6 +1,6 @@
 {
   "name": "Ecowitt Relay",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "slug": "ecowitt_relay",
   "description": "Relay Ecowitt data to Home Assistant via Webhook and to PWSweather",
   "documentation": "https://github.com/npondel/ecowitt-relay",
