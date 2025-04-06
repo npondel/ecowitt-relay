@@ -34,6 +34,7 @@ def receive_data():
     # === Forward to PWSweather ===
     try:
         if PWS_ID and PWS_KEY:
+            baromin = data.get('baromin') or data.get('baromabsin')
             pws_payload = {
                 'ID': PWS_ID,
                 'PASSWORD': PWS_KEY,
