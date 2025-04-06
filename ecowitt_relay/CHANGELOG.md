@@ -1,6 +1,9 @@
 # Changelog
 
-## [2.0.12 - 2025-04-06
+## [2.1.0] - 2025-04-06
+- God dammit chatgpt...pressure is fixed.
+
+## [2.0.2] - 2025-04-06
 - Continue to clean up logging.
 
 ## [2.0.1] - 2025-04-06

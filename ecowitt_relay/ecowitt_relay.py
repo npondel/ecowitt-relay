@@ -50,8 +50,8 @@ def receive_data():
                 'winddir': data.get('winddir'),
                 'windspeedmph': data.get('windspeedmph'),
                 'windgustmph': data.get('windgustmph'),
-                'baromrelin': data.get('baromrelin'),
-                'baromabsin': data.get('baromabsin'),
+                # Map pressure using baromabsin as baromin:
+                'baromin': data.get('baromabsin'),
                 'rainin': data.get('hrain_piezo'),
                 'dailyrainin': data.get('drain_piezo'),
                 'maxdailygust': data.get('maxdailygust'),
